@@ -1,14 +1,11 @@
 ####
-# Each team's file must define four tokens:
-#     team_name: a string
-#     strategy_name: a string
-#     strategy_description: a string
-#     move: A function that returns 'c' or 'b'
+# Note: All comments ending in "-TP" were written by TrevorPeitzman
 ####
 
-team_name = 'The name the team gives to itself' # Only 10 chars displayed.
-strategy_name = 'The name the team gives to this strategy'
-strategy_description = 'How does this strategy decide?'
+team_name = 'Bscts&Grvy' # Only 10 chars displayed.
+strategy_name = 'America The Beautiful'
+strategy_description = 'A melting pot of diverse code. ' \
+                       'Uses the best parts of all our test strategies and experimentation.'
     
 def move(my_history, their_history, my_score, their_score):
     ''' Arguments accepted: my_history, their_history are strings.
@@ -25,10 +22,30 @@ def move(my_history, their_history, my_score, their_score):
     
     # Analyze my_history and their_history and/or my_score and their_score.
     # Decide whether to return 'c' or 'b'.
-    
-    return 'c'
 
-    
+    # Create variable to represent the probability this is the last round to be played  -TP
+    # knowing there is a random # of rounds played between 100 & 200    -TP
+    probability_round_is_last = float((len(my_history)) - 100) / 99.0
+
+    # If opponent betrays in first 8 moves even though I didn't, retaliate for rest of match    -TP
+    if 'b' in their_history[0:7]:
+        return 'b'
+    # As end of match approaches, change tactic slightly    -TP
+    # Return 'b' when on the guaranteed last round      -TP
+    elif probability_round_is_last == 1:
+        return 'b'
+    # Avoid issue with having no history; always return 'c' on first round  -TP
+    elif len(their_history) == 0:
+        return 'c'
+    # First Round: no response is given, so their_history == 0 characters. Program colludes as initial response. --Brandon Rios
+    elif their_history[-1] == 'b':
+        return 'b'
+    ##Subsequent Rounds: If opponent answered with 'betray' the previous round, respond with betray. --Brandon Rios
+    else:
+        return 'c'
+    ###Subsequent Rounds (cont'd): If opponent responded with other (a.k.a. Collude) in previous round, respond with collude. --Brandon Rios
+
+
 def test_move(my_history, their_history, my_score, their_score, result):
     '''calls move(my_history, their_history, my_score, their_score)
     from this module. Prints error if return value != result.
@@ -52,7 +69,7 @@ if __name__ == '__main__':
               their_history='', 
               my_score=0,
               their_score=0,
-              result='b'):
+              result='c'):
          print 'Test passed'
      # Test 2: Continue betraying if they collude despite being betrayed.
     test_move(my_history='bbb',
@@ -65,4 +82,4 @@ if __name__ == '__main__':
               # move('bbb', 'ccc', 0, 0) returns 'b'.
               my_score=0, 
               their_score=0,
-              result='b')             
+              result='c')

@@ -6,9 +6,12 @@
 #     move: A function that returns 'c' or 'b'
 ####
 
-team_name = 'The name the team gives to itself' # Only 10 chars displayed.
-strategy_name = 'The name the team gives to this strategy'
-strategy_description = 'How does this strategy decide?'
+team_name = 'HONG KONG' # Only 10 chars displayed.
+strategy_name = 'STRAG1'
+strategy_description = 'first six betray and the next based on opponents most common decision in last 5 moves'
+
+
+
     
 def move(my_history, their_history, my_score, their_score):
     ''' Arguments accepted: my_history, their_history are strings.
@@ -26,9 +29,34 @@ def move(my_history, their_history, my_score, their_score):
     # Analyze my_history and their_history and/or my_score and their_score.
     # Decide whether to return 'c' or 'b'.
     
-    return 'c'
-
+    def must_common(common=''):
+        '''collude or betray appear most often in oppenents last 5 movies'''
+        
+        y = 0
+        x = 0
+        #go through each letter in the last 5 decisions of opponent
+        for letters in their_history[-5:]:
+            #the x or y with the highest value is equivalent of the most often letter
+            if(letters == 'b'or 'B'):
+                #for every b add one to y
+                y =+ 1
+            else:
+                x =+ 1
+        #assign the value of common to the most appeared letter
+        if (y > x):
+            common='b' 
+        else:
+            common='c' 
+    if len(my_history) < 6: # It's the first six round; collude.
+        return 'b'
+    else:
+        #returns opposite letter of the most common letter in last 5 decisions
+        if must_common(common='b'):
+             return 'c'
+        else:
     
+             return 'b'
+
 def test_move(my_history, their_history, my_score, their_score, result):
     '''calls move(my_history, their_history, my_score, their_score)
     from this module. Prints error if return value != result.
@@ -46,7 +74,6 @@ def test_move(my_history, their_history, my_score, their_score, result):
         return False
 
 if __name__ == '__main__':
-     
     # Test 1: Betray on first move.
     if test_move(my_history='',
               their_history='', 
@@ -65,4 +92,4 @@ if __name__ == '__main__':
               # move('bbb', 'ccc', 0, 0) returns 'b'.
               my_score=0, 
               their_score=0,
-              result='b')             
+              result='b')  

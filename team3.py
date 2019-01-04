@@ -1,14 +1,15 @@
 ####
 # Each team's file must define four tokens:
-#     team_name: a string
-#     strategy_name: a string
-#     strategy_description: a string
+#     team_name: Gamers gotta Game
+#     strategy_name: My Ex-Girlfriends Stategy
+#     strategy_description: Betray ALL except for the beginning so it gives you
+#     a false sense of security
 #     move: A function that returns 'c' or 'b'
 ####
 
-team_name = 'The name the team gives to itself' # Only 10 chars displayed.
-strategy_name = 'The name the team gives to this strategy'
-strategy_description = 'How does this strategy decide?'
+team_name = 'Gamers Gotta Game' # Only 10 chars displayed.
+strategy_name = 'My ex-girlfriends strategy'
+strategy_description = 'Collude round 1, betray the rest'
     
 def move(my_history, their_history, my_score, their_score):
     ''' Arguments accepted: my_history, their_history are strings.
@@ -26,7 +27,16 @@ def move(my_history, their_history, my_score, their_score):
     # Analyze my_history and their_history and/or my_score and their_score.
     # Decide whether to return 'c' or 'b'.
     
-    return 'c'
+    #The game starts by my side coluding, after the first turn all we do is betray
+    
+    if len(my_history) == 0:
+        return 'c'
+    elif their_history[-1] == 'b':
+        return 'b'
+    elif their_history[-1] == 'c':
+        return 'b'
+    else:
+        return 'b'
 
     
 def test_move(my_history, their_history, my_score, their_score, result):
@@ -48,8 +58,8 @@ def test_move(my_history, their_history, my_score, their_score, result):
 if __name__ == '__main__':
      
     # Test 1: Betray on first move.
-    if test_move(my_history='',
-              their_history='', 
+    if test_move(my_history='c',
+              their_history='b', 
               my_score=0,
               their_score=0,
               result='b'):
